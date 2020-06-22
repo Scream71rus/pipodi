@@ -14,10 +14,10 @@ create table pipodi.customer(
     id serial primary key,
     email text not null,
     password text not null,
-    name text not null,
-    phone text not null,
-    service agrego.customer_service not null,
-    balance real not null default 0,
+    name text,
+    phone text,
+    adress text,
+    postcode text,
     confirm_email boolean not null default false,
     created timestamp not null default now()
 );

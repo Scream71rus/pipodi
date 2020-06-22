@@ -24,9 +24,14 @@ class BaseHandler(tornado.web.RequestHandler):
         except:
             return None
 
-    def set_cache(self, key, value, ex=None):
+    async def set_cache(self, key, value, ex=None):
         value = pickle.dumps(value)
-        self.cache.set(key, value, ex=ex)
+        if ex:
+            await self.cache.set(key, value, ex=ex)
+        else:
+            await self.cache.set(key, value)
 
-    def prepare(self):
-        pass
+    async def prepare(self):
+        session_key = self.get_cookie('pipodi_session_key')
+        if session_key:
+            self.customer = await self.get_cache('pipodi_session_key_{}'.format(session_key))
